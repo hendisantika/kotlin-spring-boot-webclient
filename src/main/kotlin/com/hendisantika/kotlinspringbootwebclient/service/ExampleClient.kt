@@ -2,6 +2,7 @@ package com.hendisantika.kotlinspringbootwebclient.service
 
 import com.hendisantika.kotlinspringbootwebclient.model.ExampleRequest
 import com.hendisantika.kotlinspringbootwebclient.model.ExampleResponse
+import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.BodyInserters
@@ -66,4 +67,14 @@ class ExampleClient(private val webClient: WebClient) {
                     .retrieve()
                     .bodyToMono(ExampleResponse::class.java)
                     .block()
+
+    fun sendFormEncodedRequestBody(name: String, value: String): ExampleResponse? =
+            webClient.post()
+                    .uri { it.pathSegment("api", "hello").build() }
+                    .body(BodyInserters.fromFormData(name, value))
+                    .retrieve()
+                    .bodyToMono(ExampleResponse::class.java)
+                    .block()
 }
+
+inline fun <reified T> typeReference() = object : ParameterizedTypeReference<T>() {}
