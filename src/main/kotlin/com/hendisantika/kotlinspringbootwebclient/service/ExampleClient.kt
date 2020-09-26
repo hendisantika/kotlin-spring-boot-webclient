@@ -47,4 +47,13 @@ class ExampleClient(private val webClient: WebClient) {
                     .retrieve()
                     .bodyToMono(ExampleResponse::class.java)
                     .block()
+
+
+    fun retrieveExampleResponseFromBasicSecuredEndpoint(username: String, password: String): ExampleResponse? =
+            webClient.get()
+                    .uri { it.pathSegment("api", "secured", "bearer", "hello").build() }
+                    .headers { it.setBasicAuth(username, password) }
+                    .retrieve()
+                    .bodyToMono(ExampleResponse::class.java)
+                    .block()
 }
