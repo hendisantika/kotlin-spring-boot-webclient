@@ -1,7 +1,10 @@
 package com.hendisantika.kotlinspringbootwebclient.controller
 
+import com.hendisantika.kotlinspringbootwebclient.model.ExampleResponse
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDateTime
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,4 +17,10 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RestController
 @RequestMapping("/api")
-class TestController
+class TestController {
+    @GetMapping("/hello")
+    fun getExampleResponse() = ExampleResponse(
+            message = "Hello world",
+            timestamp = LocalDateTime.now()
+    )
+}
