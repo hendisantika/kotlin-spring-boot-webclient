@@ -39,4 +39,12 @@ class ExampleClient(private val webClient: WebClient) {
                     .retrieve()
                     .bodyToMono(typeReference<List<ExampleResponse>>())
                     .block()
+
+    fun retrieveExampleResponseFromBearerSecuredEndpoint(token: String): ExampleResponse? =
+            webClient.get()
+                    .uri { it.pathSegment("api", "secured", "hello").build() }
+                    .headers { it.setBearerAuth(token) }
+                    .retrieve()
+                    .bodyToMono(ExampleResponse::class.java)
+                    .block()
 }
