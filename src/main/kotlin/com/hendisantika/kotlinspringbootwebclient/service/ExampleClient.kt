@@ -1,5 +1,6 @@
 package com.hendisantika.kotlinspringbootwebclient.service
 
+import com.hendisantika.kotlinspringbootwebclient.model.ExampleResponse
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 
@@ -13,4 +14,11 @@ import org.springframework.web.reactive.function.client.WebClient
  * Time: 06.10
  */
 @Component
-class ExampleClient(private val webClient: WebClient)
+class ExampleClient(private val webClient: WebClient) {
+    fun retrieveExampleResponse(): ExampleResponse? =
+            webClient.get()
+                    .uri { it.pathSegment("api", "hello").build() }
+                    .retrieve()
+                    .bodyToMono(ExampleResponse::class.java)
+                    .block()
+}
