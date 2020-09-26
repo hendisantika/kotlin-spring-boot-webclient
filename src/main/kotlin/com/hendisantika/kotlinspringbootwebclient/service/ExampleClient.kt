@@ -1,8 +1,10 @@
 package com.hendisantika.kotlinspringbootwebclient.service
 
+import com.hendisantika.kotlinspringbootwebclient.model.ExampleRequest
 import com.hendisantika.kotlinspringbootwebclient.model.ExampleResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
+import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.client.WebClient
 
 /**
@@ -53,6 +55,14 @@ class ExampleClient(private val webClient: WebClient) {
             webClient.get()
                     .uri { it.pathSegment("api", "secured", "bearer", "hello").build() }
                     .headers { it.setBasicAuth(username, password) }
+                    .retrieve()
+                    .bodyToMono(ExampleResponse::class.java)
+                    .block()
+
+    fun sendJsonRequestBody(requestBody: ExampleRequest): ExampleResponse? =
+            webClient.post()
+                    .uri { it.pathSegment("api", "hello").build() }
+                    .body(BodyInserters.fromValue(requestBody))
                     .retrieve()
                     .bodyToMono(ExampleResponse::class.java)
                     .block()
