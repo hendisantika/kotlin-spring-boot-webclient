@@ -23,4 +23,16 @@ class TestController {
             message = "Hello world",
             timestamp = LocalDateTime.now()
     )
+
+    @GetMapping("/hello-list")
+    fun getExampleResponseList() = listOf(
+            ExampleResponse(
+                    message = "Hello world #1",
+                    timestamp = LocalDateTime.now()
+            ),
+            ExampleResponse(
+                    message = "Hello world #2",
+                    timestamp = LocalDateTime.now()
+            )
+    )
 }
