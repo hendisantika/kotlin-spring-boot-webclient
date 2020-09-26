@@ -1,6 +1,7 @@
 package com.hendisantika.kotlinspringbootwebclient.service
 
 import com.hendisantika.kotlinspringbootwebclient.model.ExampleResponse
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 
@@ -20,5 +21,15 @@ class ExampleClient(private val webClient: WebClient) {
                     .uri { it.pathSegment("api", "hello").build() }
                     .retrieve()
                     .bodyToMono(ExampleResponse::class.java)
+                    .block()
+
+    fun exchangeExampleResponse(): ResponseEntity<ExampleResponse>? =
+            webClient.get()
+                    .uri { it.pathSegment("api", "hello").build() }
+                    .exchange()
+                    .flatMap {
+                        println("Raw status code: ${it.rawStatusCode()}")
+                        it.toEntity(ExampleResponse::class.java)
+                    }
                     .block()
 }
