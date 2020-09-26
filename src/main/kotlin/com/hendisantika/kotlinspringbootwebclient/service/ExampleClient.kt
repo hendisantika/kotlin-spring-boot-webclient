@@ -32,4 +32,11 @@ class ExampleClient(private val webClient: WebClient) {
                         it.toEntity(ExampleResponse::class.java)
                     }
                     .block()
+
+    fun retrieveExampleResponseList(): List<ExampleResponse>? =
+            webClient.get()
+                    .uri { it.pathSegment("api", "hello-list").build() }
+                    .retrieve()
+                    .bodyToMono(typeReference<List<ExampleResponse>>())
+                    .block()
 }
